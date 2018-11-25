@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image,  } from 'react-native';
 import { Camera, Permissions, Constants } from 'expo'
 // import camerSwitchLogo from '../../assets/78816-200 (1).png'
+// import Header from '../Constants/header'
 
 export default class CustomCamera extends React.Component {
   state = {
@@ -63,6 +64,7 @@ export default class CustomCamera extends React.Component {
   render() {
     const { hasCameraPermission, faces } = this.state
     console.log(faces)
+    
     if (hasCameraPermission === null) {
       return <View />
     } else if (hasCameraPermission === false) {
