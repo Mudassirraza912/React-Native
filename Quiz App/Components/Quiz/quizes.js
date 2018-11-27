@@ -14,7 +14,8 @@ export default class Quiz extends React.Component {
         startbtn: true,
         quiz: [],
         select:[],
-        result: false
+        result: false,
+        correct:[]
     }
 
     componentWillMount() {
@@ -26,25 +27,40 @@ export default class Quiz extends React.Component {
                 this.setState({
                     quiz: respone.results
                 })
+
+
             })
             .catch((err) => {
                 console.log(err)
             })
     }
-    selectedOpt(correct, index, value ) {
+
+    
+    selectedOpt(correct, index, radioInd, value ) {
         const {select} = this.state
-        // console.log('index',index, "Value",value,"Correct", correct)
-       value == correct && !select.includes(value) && select.push(value)
-       this.setState({
-        select
-       })
+        console.log('index', index,  "radioInd", radioInd, "Correct", correct, " value" , value)
+    //    value == correct && !select.includes(value) && select.push(value)
+    //    this.setState({
+    //     select
+    //    })
     //    console.log('sdaasd',select)
+    select[index] = value
+    this.setState({
+            select
+           })
     }
 
     result = () => {
-        const {select, quiz} = this.state
+        const {select, quiz, correct} = this.state
+        var correc = 0
+        quiz.map(val =>{
+            console.log(val.correct_answer)
+        select.includes(val.correct_answer) && correct.push(val.correct_answer) 
+          
+        })
+        console.log("Last",correct)
         const selectedOpt = select
-        const result = (select.length*100)/(quiz.length)
+        const result = (correct.length*100)/(quiz.length)
         this.setState({
             result: result
         })
@@ -57,24 +73,26 @@ export default class Quiz extends React.Component {
                 <Text>
                     Your result is ==> {result}%
                 </Text>
-                <Button title='Play Again' onPress={() => {this.setState({startbtn: false, result:false, select:[]})}}/>
+                <Button title='Play Again' onPress={() => {this.setState({startbtn: false, result:false, select:[], correct:[]})}}/>
             </View>
         )
     }
 
     renderQuiz() {
-        const { quiz, select } = this.state
-console.log("Select" , select)
+        const { correct, select, quiz } = this.state
+console.log("Select" , select, 'Correct', correct )
         return (
             <ScrollView >
                 {/* <Header /> */}
-                {quiz.map((value) => {
+                {quiz.map((value, index) => {
                     const incorrectans = value.incorrect_answers 
                     const opt = [value.correct_answer, ...incorrectans]
+                    // correct.push(value)
+                    // this.setState({correct})
                 return (
                     <View>
                         <Text style={{fontWeight :'bold', marginLeft : '5%'}}>Q:{value.question}</Text>
-                        <RadioGroup  onSelect = {this.selectedOpt.bind(this, value.correct_answer)}>
+                        <RadioGroup  onSelect = {this.selectedOpt.bind(this, value.correct_answer, index)}>
                    { opt.map((val) => {
                         // console.log(val)
                     return (
