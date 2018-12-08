@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground } from 'react-native';
 import { Accelerometer,  Permissions, Contacts } from 'expo'
 
 export default class App extends React.Component {
@@ -53,7 +53,9 @@ export default class App extends React.Component {
     const { movement, jumps }  = this.state
 
     return (
-      <View style={{flex: 1, top: 100, left: this.state.movement}}>
+      <View>
+        <ImageBackground source={require('./assets/XIZ6y.gif')} style={{width: '100%', height: '100%'}}>
+      <View style={{flex: 1, top: !jumps ? 500 : 400, left: this.state.movement}}>
         {/* <Text>Open up App.js to start working on your app!</Text> */}
         <TouchableOpacity onPress={this.jump}>
           {!jumps ? <Image source={require('./assets/spider.gif')} />
@@ -61,6 +63,8 @@ export default class App extends React.Component {
           <Image source={require('./assets/spider-sting.gif')} />}
           
           </TouchableOpacity>
+      </View>
+      </ImageBackground>
       </View>
     );
   }
